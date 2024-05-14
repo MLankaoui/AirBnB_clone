@@ -32,7 +32,6 @@ class HBNBCommand(cmd.Cmd):
         self.file_storage = FileStorage()
         self.file_storage.reload()
 
-
     def do_quit(self, args):
         """Quits the program"""
         return True
@@ -64,13 +63,15 @@ class HBNBCommand(cmd.Cmd):
         print(new_instance.id)
 
     def do_show(self, arg):
+        """Show details of a specified object."""
         args = arg.split()
         if not args:
             print("** class name missing **")
             return
 
         class_name = args[0]
-        if class_name not in ["BaseModel", "Place", "State", "City", "Amenity", "Review", "User"]:
+        if class_name not in ["BaseModel", "Place",
+                              "State", "City", "Amenity", "Review", "User"]:
             print("** class doesn't exist **")
             return
 
@@ -86,8 +87,10 @@ class HBNBCommand(cmd.Cmd):
                 if key in instances:
                     instance = instances[key]
                     # Convert created_at and updated_at to datetime objects
-                    instance["created_at"] = datetime.datetime.strptime(instance["created_at"], "%Y-%m-%dT%H:%M:%S.%f")
-                    instance["updated_at"] = datetime.datetime.strptime(instance["updated_at"], "%Y-%m-%dT%H:%M:%S.%f")
+                    instance["created_at"] = datetime.datetime.strptime(
+                        instance["created_at"], "%Y-%m-%dT%H:%M:%S.%f")
+                    instance["updated_at"] = datetime.datetime.strptime(
+                        instance["updated_at"], "%Y-%m-%dT%H:%M:%S.%f")
                     # Remove __class__ key
                     del instance['__class__']
                     formatted_instance = "[{}] ({}) {}".format(
@@ -98,10 +101,8 @@ class HBNBCommand(cmd.Cmd):
         except FileNotFoundError:
             print("** no instance found **")
 
-
-
-
     def do_destroy(self, arg):
+        """Delete a specified object."""
         args = arg.split()
         if not args:
             print("** class name missing **")
@@ -131,6 +132,7 @@ class HBNBCommand(cmd.Cmd):
             print("** no instance found **")
 
     def do_all(self, arg):
+        """List all objects or objects of a specified class."""
         args = arg.split()
         if args and args[0] not in ["BaseModel"]:
             print("** class doesn't exist **")
@@ -142,11 +144,14 @@ class HBNBCommand(cmd.Cmd):
                 if args:
                     class_name = args[0]
                     filtered_instances = {
-                        k: v for k, v in instances.items() if k.split(".")[0] == class_name
+                        k: v for k, v in instances.items()
+                        if k.split(".")[0] == class_name
                     }
                     formatted_instances = []
                     for key, instance in filtered_instances.items():
-                        attributes = ", ".join(["'{}': {}".format(k, repr(v)) for k, v in instance.items() if k != "__class__"])
+                        attributes = ", ".join(["'{}': {}".format(k, repr(v))
+                                                for k, v in instance.items()
+                                                if k != "__class__"])
                         formatted_instance = "[{}] ({}) ({})".format(
                             instance["__class__"], instance["id"],
                             attributes
@@ -156,7 +161,9 @@ class HBNBCommand(cmd.Cmd):
                 else:
                     formatted_instances = []
                     for key, instance in instances.items():
-                        attributes = ", ".join(["'{}': {}".format(k, repr(v)) for k, v in instance.items() if k != "__class__"])
+                        attributes = ", ".join(["'{}': {}".format(k, repr(v))
+                                                for k, v in instance.items()
+                                                if k != "__class__"])
                         formatted_instance = "[{}] ({}) ({})".format(
                             instance["__class__"], instance["id"],
                             attributes
@@ -166,8 +173,8 @@ class HBNBCommand(cmd.Cmd):
         except FileNotFoundError:
             print("[]")
 
-
     def do_update(self, arg):
+        """Update an attribute of a specified object."""
         args = arg.split()
         if not args:
             print("** class name missing **")
@@ -212,6 +219,7 @@ class HBNBCommand(cmd.Cmd):
                     print("** no instance found **")
         except FileNotFoundError:
             print("** no instance found **")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
