@@ -4,6 +4,9 @@ from datetime import datetime
 """a script that creates a class base_model"""
 
 
+strptime = datetime.strptime
+
+
 class BaseModel:
     """
     A base class for other classes to inherit from.
@@ -14,20 +17,29 @@ class BaseModel:
         updated_at (datetime): The datetime when the object was last updated.
     """
 
-    def __init__(self):
-        """
-        Initializes a BaseModel instance with a unique ID
-        and creation/update timestamps.
-        """
+    def __init__(self, *args, **kwargs):
         self.id = str(uuid.uuid4())
         self.created_at = datetime.now()
         self.updated_at = datetime.now()
+        if kwargs is not None:
+            for key, vl in kwargs.items():
+                if key != '__class__':
+                    if key in ('updated_at', 'created_at'):
+                        vl = strptime(vl, '%Y-%m-%dT%H:%M:%S.%f')
+                    setattr(self, key, vl)
+            self.id = kwargs.get('id')
+
+        else:
+            self.id = str(uuid.uuid4())
+            self.created_at = datetime.now()
+            self.updated_at = datetime.now()
+
 
     def __str__(self):
         """
         Returns a string representation of the BaseModel instance.
         """
-        return "[{}] ({}) ({})".format(
+        return "[{}] ({}) {}".format(
             __class__.__name__, self.id, self.__dict__)
 
     def to_dict(self):
