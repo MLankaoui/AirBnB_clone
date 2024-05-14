@@ -3,6 +3,7 @@ import uuid
 from datetime import datetime
 from models.__init__ import storage
 
+
 class BaseModel:
     """
     A base class for other classes to inherit from.
@@ -23,12 +24,13 @@ class BaseModel:
         """
         self.created_at = datetime.now()
         self.updated_at = datetime.now()
-        
+
         if kwargs is not None:
             for key, value in kwargs.items():
                 if key != '__class__':
                     if key in ('updated_at', 'created_at'):
-                        value = datetime.strptime(value, '%Y-%m-%dT%H:%M:%S.%f')
+                        value = datetime.strptime(
+                            value, '%Y-%m-%dT%H:%M:%S.%f')
                     setattr(self, key, value)
             if 'id' not in kwargs:
                 self.id = str(uuid.uuid4())
