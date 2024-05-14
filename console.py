@@ -15,7 +15,7 @@ class HBNBCommand(cmd.Cmd):
         """
         return True
 
-    def do_EOF(self):
+    def do_EOF(self, line):
         """
         Exit the program cleanly at end of file (EOF).
         """
