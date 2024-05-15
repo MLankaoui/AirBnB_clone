@@ -1,64 +1,38 @@
 #!/usr/bin/python3
 import cmd
-import json
+from models import storage
 from models.base_model import BaseModel
-from models.engine.file_storage import FileStorage
-import datetime
-
+from models.user import User  # Import the User class
 
 class HBNBCommand(cmd.Cmd):
-    """
-    HBNBCommand class extends cmd.Cmd to create
-    a command-line interface for a program.
-
-    Attributes:
-        prompt (str): The command prompt displayed to the user.
-
-    Methods:
-        __init__: Initializes the command-line interface.
-        do_help: Provides help information about available commands.
-        do_quit: Quits the program.
-        do_EOF: Handles End-of-File condition.
-        do_: Handles an empty line input.
-    """
-
-    def __init__(self):
-        """
-        Initializes the HBNBCommand instance.
-        Sets the prompt for the command-line interface.
-        """
-        cmd.Cmd.__init__(self)
-        self.prompt = '(hbnb) '
-        self.file_storage = FileStorage()
-        self.file_storage.reload()
+    prompt = '(hbnb) '
 
     def do_quit(self, args):
-        """Quits the program"""
+        """Quit the program."""
         return True
 
     def do_EOF(self, args):
-        """Handles End-of-File condition (Ctrl+D).
-        Exits the program gracefully."""
+        """Handle EOF to exit the program."""
         print()
         return True
 
     def emptyline(self):
+        """Do nothing on empty input line."""
         pass
 
     def do_create(self, arg):
-        """Creates a new instance of BaseModel, saves it, and prints the id."""
+        """Create a new instance of BaseModel, save it, and print the id."""
         args = arg.split()
         if not args:
             print("** class name missing **")
             return
 
         class_name = args[0]
-        if class_name not in ["BaseModel"]:
+        if class_name not in ["BaseModel", "User"]:  # Add other models as needed
             print("** class doesn't exist **")
             return
 
         new_instance = eval(class_name)()
-        self.file_storage.new(new_instance)
         new_instance.save()
         print(new_instance.id)
 
@@ -70,8 +44,7 @@ class HBNBCommand(cmd.Cmd):
             return
 
         class_name = args[0]
-        if class_name not in ["BaseModel", "Place",
-                              "State", "City", "Amenity", "Review", "User"]:
+        if class_name not in ["BaseModel", "User"]:  # Add other models as needed
             print("** class doesn't exist **")
             return
 
@@ -80,25 +53,11 @@ class HBNBCommand(cmd.Cmd):
             return
 
         instance_id = args[1]
-        try:
-            with open("file.json", "r") as file:
-                instances = json.load(file)
-                key = "{}.{}".format(class_name, instance_id)
-                if key in instances:
-                    instance = instances[key]
-                    # Convert created_at and updated_at to datetime objects
-                    instance["created_at"] = datetime.datetime.strptime(
-                        instance["created_at"], "%Y-%m-%dT%H:%M:%S.%f")
-                    instance["updated_at"] = datetime.datetime.strptime(
-                        instance["updated_at"], "%Y-%m-%dT%H:%M:%S.%f")
-                    # Remove __class__ key
-                    del instance['__class__']
-                    formatted_instance = "[{}] ({}) {}".format(
-                        class_name, instance_id, instance)
-                    print(formatted_instance)
-                else:
-                    print("** no instance found **")
-        except FileNotFoundError:
+        key = "{}.{}".format(class_name, instance_id)
+        all_objects = storage.all()
+        if key in all_objects:
+            print(all_objects[key])
+        else:
             print("** no instance found **")
 
     def do_destroy(self, arg):
@@ -109,7 +68,7 @@ class HBNBCommand(cmd.Cmd):
             return
 
         class_name = args[0]
-        if class_name not in ["BaseModel"]:
+        if class_name not in ["BaseModel", "User"]:  # Add other models as needed
             print("** class doesn't exist **")
             return
 
@@ -118,60 +77,28 @@ class HBNBCommand(cmd.Cmd):
             return
 
         instance_id = args[1]
-        try:
-            with open("file.json", "r") as file:
-                instances = json.load(file)
-                key = "{}.{}".format(class_name, instance_id)
-                if key in instances:
-                    del instances[key]
-                    with open("file.json", "w") as outfile:
-                        json.dump(instances, outfile)
-                else:
-                    print("** no instance found **")
-        except FileNotFoundError:
+        key = "{}.{}".format(class_name, instance_id)
+        all_objects = storage.all()
+        if key in all_objects:
+            del all_objects[key]
+            storage.save()
+        else:
             print("** no instance found **")
 
     def do_all(self, arg):
         """List all objects or objects of a specified class."""
         args = arg.split()
-        if args and args[0] not in ["BaseModel"]:
+        if args and args[0] not in ["BaseModel", "User"]:  # Add other models as needed
             print("** class doesn't exist **")
             return
 
-        try:
-            with open("file.json", "r") as file:
-                instances = json.load(file)
-                if args:
-                    class_name = args[0]
-                    filtered_instances = {
-                        k: v for k, v in instances.items()
-                        if k.split(".")[0] == class_name
-                    }
-                    formatted_instances = []
-                    for key, instance in filtered_instances.items():
-                        attributes = ", ".join(["'{}': {}".format(k, repr(v))
-                                                for k, v in instance.items()
-                                                if k != "__class__"])
-                        formatted_instance = "[{}] ({}) ({})".format(
-                            instance["__class__"], instance["id"],
-                            attributes
-                        )
-                        formatted_instances.append(formatted_instance)
-                    print("\n".join(formatted_instances))
-                else:
-                    formatted_instances = []
-                    for key, instance in instances.items():
-                        attributes = ", ".join(["'{}': {}".format(k, repr(v))
-                                                for k, v in instance.items()
-                                                if k != "__class__"])
-                        formatted_instance = "[{}] ({}) ({})".format(
-                            instance["__class__"], instance["id"],
-                            attributes
-                        )
-                        formatted_instances.append(formatted_instance)
-                    print("\n\n".join(formatted_instances))
-        except FileNotFoundError:
-            print("[]")
+        all_objects = storage.all()
+        if args:
+            class_name = args[0]
+            objects = [str(obj) for key, obj in all_objects.items() if key.startswith(class_name)]
+        else:
+            objects = [str(obj) for obj in all_objects.values()]
+        print(objects)
 
     def do_update(self, arg):
         """Update an attribute of a specified object."""
@@ -181,7 +108,7 @@ class HBNBCommand(cmd.Cmd):
             return
 
         class_name = args[0]
-        if class_name not in ["BaseModel"]:
+        if class_name not in ["BaseModel", "User"]:  # Add other models as needed
             print("** class doesn't exist **")
             return
 
@@ -200,26 +127,19 @@ class HBNBCommand(cmd.Cmd):
             return
 
         attribute_value = args[3]
-        try:
-            attribute_value = eval(attribute_value)
-        except (NameError, SyntaxError):
-            print("** value missing **")
-            return
-
-        try:
-            with open("file.json", "r") as file:
-                instances = json.load(file)
-                key = "{}.{}".format(class_name, instance_id)
-                if key in instances:
-                    instance = instances[key]
-                    instance[attribute_name] = attribute_value
-                    with open("file.json", "w") as outfile:
-                        json.dump(instances, outfile)
-                else:
-                    print("** no instance found **")
-        except FileNotFoundError:
+        key = "{}.{}".format(class_name, instance_id)
+        all_objects = storage.all()
+        if key in all_objects:
+            obj = all_objects[key]
+            try:
+                attribute_value = eval(attribute_value)
+            except (NameError, SyntaxError):
+                pass
+            setattr(obj, attribute_name, attribute_value)
+            obj.save()
+        else:
             print("** no instance found **")
 
-
 if __name__ == "__main__":
+    storage.reload()
     HBNBCommand().cmdloop()

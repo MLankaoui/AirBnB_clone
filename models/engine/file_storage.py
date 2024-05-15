@@ -1,60 +1,42 @@
-import os
+# models/engine/file_storage.py
 import json
-import datetime
-
 
 class FileStorage:
-    """A class for storing and loading objects to/from a JSON file."""
     __file_path = "file.json"
     __objects = {}
 
     def all(self):
-        """
-        Returns:
-            dict: A dictionary containing all stored objects.
-        """
         return self.__objects
 
     def new(self, obj):
-        """
-        Adds a new object to the storage.
-
-        Args:
-            obj: The object to be added.
-        """
         key = "{}.{}".format(obj.__class__.__name__, obj.id)
         self.__objects[key] = obj
 
     def save(self):
-        """
-        Serializes stored objects to the JSON file.
-        """
-        jso_dict = {}
+        jso_dict = {key: obj.to_dict() for key, obj in self.__objects.items()}
 
-        for ky in FileStorage.__objects:
-            jso_dict[ky] = FileStorage.__objects[ky].to_dict()
-
-        with open(FileStorage.__file_path, 'w') as f:
+        with open(self.__file_path, 'w') as f:
             json.dump(jso_dict, f)
 
     def reload(self):
-        """
-        Deserializes objects from the JSON file into storage.
-        """
-        if os.path.exists(self.__file_path):
-            with open(self.__file_path, 'r') as file:
-                for line in file:
-                    try:
-                        json_data = json.loads(line)
-                        for key, value in json_data.items():
-                            clas_nm, obj_id = key.split('.')
-                            modl = __import__(
-                                'models.' + clas_nm, fromlist=[clas_nm])
-                            cls = getattr(modl, clas_nm)
-                            value["created_at"] = datetime.datetime.strptime(
-                                value["created_at"], "%Y-%m-%dT%H:%M:%S.%f")
-                            value["updated_at"] = datetime.datetime.strptime(
-                                value["updated_at"], "%Y-%m-%dT%H:%M:%S.%f")
-                            self.__objects[key] = cls(**value)
-                    except Exception as e:
-                        print(f"Error loading object: {e}")
+        try:
+            with open(self.__file_path, 'r') as f:
+                dict_obj = json.load(f)
+
+                for key, value in dict_obj.items():
+                    class_name = value["__class__"]
+
+                    if class_name == 'BaseModel':
+                        from models.base_model import BaseModel
+                        obj_class = BaseModel
+                    elif class_name == 'User':
+                        from models.user import User
+                        obj_class = User
+
+                    else:
+                        raise ImportError(f"Class {class_name} is not recognized")
+
+                    obj = obj_class(**value)
+                    self.__objects[key] = obj
+        except FileNotFoundError:
+            pass
