@@ -46,10 +46,23 @@ class FileStorage:
                     elif class_name == 'User':
                         from models.user import User
                         obj_class = User
-
+                    elif class_name == 'Place':
+                        from models.place import Place
+                        obj_class = Place
+                    elif class_name == 'State':
+                        from models.state import State
+                        obj_class = State
+                    elif class_name == 'City':
+                        from models.city import City
+                        obj_class = City
+                    elif class_name == 'Amenity':
+                        from models.amenity import Amenity
+                        obj_class = Amenity
+                    elif class_name == 'Review':
+                        from models.review import Review
+                        obj_class = Review
                     else:
-                        raise ImportError(
-                            f"Class {class_name} is not recognized")
+                        raise ImportError(f"Class {class_name} is not recognized")
 
                     obj = obj_class(**value)
                     self.__objects[key] = obj
