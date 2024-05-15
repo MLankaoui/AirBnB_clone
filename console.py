@@ -2,7 +2,7 @@
 import cmd
 from models import storage
 from models.base_model import BaseModel
-from models.user import User  # Import the User class
+from models.user import User
 
 class HBNBCommand(cmd.Cmd):
     prompt = '(hbnb) '
@@ -28,7 +28,7 @@ class HBNBCommand(cmd.Cmd):
             return
 
         class_name = args[0]
-        if class_name not in ["BaseModel", "User"]:  # Add other models as needed
+        if class_name not in ["BaseModel", "User"]:
             print("** class doesn't exist **")
             return
 
@@ -44,7 +44,7 @@ class HBNBCommand(cmd.Cmd):
             return
 
         class_name = args[0]
-        if class_name not in ["BaseModel", "User"]:  # Add other models as needed
+        if class_name not in ["BaseModel", "User"]:
             print("** class doesn't exist **")
             return
 
@@ -68,7 +68,7 @@ class HBNBCommand(cmd.Cmd):
             return
 
         class_name = args[0]
-        if class_name not in ["BaseModel", "User"]:  # Add other models as needed
+        if class_name not in ["BaseModel", "User"]:
             print("** class doesn't exist **")
             return
 
@@ -88,7 +88,7 @@ class HBNBCommand(cmd.Cmd):
     def do_all(self, arg):
         """List all objects or objects of a specified class."""
         args = arg.split()
-        if args and args[0] not in ["BaseModel", "User"]:  # Add other models as needed
+        if args and args[0] not in ["BaseModel", "User"]:
             print("** class doesn't exist **")
             return
 
@@ -108,7 +108,7 @@ class HBNBCommand(cmd.Cmd):
             return
 
         class_name = args[0]
-        if class_name not in ["BaseModel", "User"]:  # Add other models as needed
+        if class_name not in ["BaseModel", "User"]:
             print("** class doesn't exist **")
             return
 
