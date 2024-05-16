@@ -62,7 +62,8 @@ class FileStorage:
                         from models.review import Review
                         obj_class = Review
                     else:
-                        raise ImportError(f"Class {class_name} is not recognized")
+                        raise ImportError(
+                            f"Class {class_name} is not recognized")
 
                     obj = obj_class(**value)
                     self.__objects[key] = obj

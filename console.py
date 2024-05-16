@@ -9,6 +9,7 @@ from models.city import City
 from models.amenity import Amenity
 from models.review import Review
 
+
 class HBNBCommand(cmd.Cmd):
     prompt = '(hbnb) '
     classes = {"BaseModel": BaseModel, "User": User, "Place": Place, "State": State, "City": City, "Amenity": Amenity, "Review": Review}
@@ -101,7 +102,8 @@ class HBNBCommand(cmd.Cmd):
         all_objects = storage.all()
         if args:
             class_name = args[0]
-            objects = [str(obj) for key, obj in all_objects.items() if key.startswith(class_name)]
+            objects = [str(obj) for key, obj in all_objects.items()
+                       if key.startswith(class_name)]
         else:
             objects = [str(obj) for obj in all_objects.values()]
         print(objects)
