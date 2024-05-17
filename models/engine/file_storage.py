@@ -35,35 +35,35 @@ class FileStorage:
         """
         try:
             with open(self.__file_path, 'r') as f:
-                dict_obj = json.load(f)
+                dictionary_objj = json.load(f)
 
-                for key, value in dict_obj.items():
-                    class_name = value["__class__"]
+                for key, value in dictionary_objj.items():
+                    clss_nm = value["__class__"]
 
-                    if class_name == 'BaseModel':
+                    if clss_nm == 'BaseModel':
                         from models.base_model import BaseModel
                         obj_class = BaseModel
-                    elif class_name == 'User':
+                    elif clss_nm == 'User':
                         from models.user import User
                         obj_class = User
-                    elif class_name == 'Place':
+                    elif clss_nm == 'Place':
                         from models.place import Place
                         obj_class = Place
-                    elif class_name == 'State':
+                    elif clss_nm == 'State':
                         from models.state import State
                         obj_class = State
-                    elif class_name == 'City':
+                    elif clss_nm == 'City':
                         from models.city import City
                         obj_class = City
-                    elif class_name == 'Amenity':
+                    elif clss_nm == 'Amenity':
                         from models.amenity import Amenity
                         obj_class = Amenity
-                    elif class_name == 'Review':
+                    elif clss_nm == 'Review':
                         from models.review import Review
                         obj_class = Review
                     else:
                         raise ImportError(
-                            f"Class {class_name} is not recognized")
+                            f"Class {clss_nm} is not recognized")
 
                     obj = obj_class(**value)
                     self.__objects[key] = obj

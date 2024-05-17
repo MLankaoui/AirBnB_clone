@@ -37,12 +37,12 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
             return
 
-        class_name = args[0]
-        if class_name not in self.classes:
+        class__nm = args[0]
+        if class__nm not in self.classes:
             print("** class doesn't exist **")
             return
 
-        new_instance = self.classes[class_name]()
+        new_instance = self.classes[class__nm]()
         new_instance.save()
         print(new_instance.id)
 
@@ -64,9 +64,9 @@ class HBNBCommand(cmd.Cmd):
 
         instance_id = args[1]
         key = "{}.{}".format(class_name, instance_id)
-        all_objects = storage.all()
-        if key in all_objects:
-            print(all_objects[key])
+        all__objj = storage.all()
+        if key in all__objj:
+            print(all__objj[key])
         else:
             print("** no instance found **")
 
@@ -77,8 +77,8 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
             return
 
-        class_name = args[0]
-        if class_name not in self.classes:
+        class__nm = args[0]
+        if class__nm not in self.classes:
             print("** class doesn't exist **")
             return
 
@@ -87,10 +87,10 @@ class HBNBCommand(cmd.Cmd):
             return
 
         instance_id = args[1]
-        key = "{}.{}".format(class_name, instance_id)
-        all_objects = storage.all()
-        if key in all_objects:
-            del all_objects[key]
+        key = "{}.{}".format(class__nm, instance_id)
+        all__objj = storage.all()
+        if key in all__objj:
+            del all__objj[key]
             storage.save()
         else:
             print("** no instance found **")
@@ -102,13 +102,13 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
 
-        all_objects = storage.all()
+        all__objj = storage.all()
         if args:
-            class_name = args[0]
-            objects = [str(obj) for key, obj in all_objects.items()
-                       if key.startswith(class_name)]
+            class__nm = args[0]
+            objects = [str(obj) for key, obj in all__objj.items()
+                       if key.startswith(class__nm)]
         else:
-            objects = [str(obj) for obj in all_objects.values()]
+            objects = [str(obj) for obj in all__objj.values()]
         print(objects)
 
     def do_update(self, arg):
@@ -118,8 +118,8 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
             return
 
-        class_name = args[0]
-        if class_name not in self.classes:
+        class__nm = args[0]
+        if class__nm not in self.classes:
             print("** class doesn't exist **")
             return
 
@@ -132,21 +132,21 @@ class HBNBCommand(cmd.Cmd):
             print("** attribute name missing **")
             return
 
-        attribute_name = args[2]
+        attr__nm = args[2]
         if len(args) < 4:
             print("** value missing **")
             return
 
-        attribute_value = args[3]
-        key = "{}.{}".format(class_name, instance_id)
-        all_objects = storage.all()
-        if key in all_objects:
-            obj = all_objects[key]
+        attr_val = args[3]
+        key = "{}.{}".format(class__nm, instance_id)
+        all__objj = storage.all()
+        if key in all__objj:
+            obj = all__objj[key]
             try:
-                attribute_value = eval(attribute_value)
+                attr_val = eval(attr_val)
             except (NameError, SyntaxError):
                 pass
-            setattr(obj, attribute_name, attribute_value)
+            setattr(obj, attr__nm, attr_val)
             obj.save()
         else:
             print("** no instance found **")
