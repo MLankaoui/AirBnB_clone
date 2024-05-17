@@ -1,4 +1,8 @@
 # models/base_model.py
+"""
+This module defines the BaseModel class, a base class for all models
+in the application, providing common attributes and methods.
+"""
 import uuid
 from datetime import datetime
 
@@ -46,7 +50,7 @@ class BaseModel:
 
     def __str__(self):
         """Returns a string representation of the instance."""
-        return "[{}] ({}) ({})".format(
+        return "[{}] ({}) {}".format(
             self.__class__.__name__, self.id, self.__dict__)
 
     def save(self):

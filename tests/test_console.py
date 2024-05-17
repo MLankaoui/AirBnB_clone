@@ -14,6 +14,7 @@ from models.review import Review
 
 
 class TestConsole(unittest.TestCase):
+    """Tests the console"""
     @classmethod
     def setUpClass(cls):
         cls.console = HBNBCommand()
