@@ -68,4 +68,4 @@ class BaseModel:
         new_dictionary['__class__'] = self.__class__.__name__
         new_dictionary['updated_at'] = self.updated_at.isoformat()
         new_dictionary['created_at'] = self.created_at.isoformat()
-        return new_dictionary
+        return (new_dictionary)
