@@ -17,21 +17,20 @@ class HBNBCommand(cmd.Cmd):
                "User": User, "Place": Place,
                "State": State, "City": City,
                "Amenity": Amenity, "Review": Review}
-    
+
     intro = "Welcome to Airbnb console. type 'help' for more info."
     prompt = "(hbnb) "
 
-    def do_quit(self, args):
-        """Quit command to exit the program"""
+    def do_EOF(self, arg):
+        """Exit command to exit the program"""
         return True
 
-    def do_EOF(self, args):
-        """Handle EOF to exit the program."""
+    def do_quit(self, arg):
+        """
+        Quit command to exit the program
+        using : quit
+        """
         return True
-
-    def emptyline(self):
-        """Do nothing on empty input line."""
-        pass
 
     def do_create(self, arg):
         """Create a new instance of a class, save it, and print the id."""
