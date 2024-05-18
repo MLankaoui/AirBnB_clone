@@ -11,11 +11,15 @@ from models.review import Review
 
 
 class HBNBCommand(cmd.Cmd):
+    """commands for hbnb"""
     prompt = '(hbnb) '
     classes = {"BaseModel": BaseModel,
                "User": User, "Place": Place,
                "State": State, "City": City,
                "Amenity": Amenity, "Review": Review}
+    
+    intro = "Welcome to Airbnb console. type 'help' for more info."
+    prompt = "(hbnb) "
 
     def do_quit(self, args):
         """Quit the program."""
@@ -23,7 +27,6 @@ class HBNBCommand(cmd.Cmd):
 
     def do_EOF(self, args):
         """Handle EOF to exit the program."""
-        print()
         return True
 
     def emptyline(self):
