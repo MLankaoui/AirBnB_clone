@@ -12,7 +12,6 @@ from models.review import Review
 
 class HBNBCommand(cmd.Cmd):
     """commands for hbnb"""
-    prompt = '(hbnb) '
     classes = {"BaseModel": BaseModel,
                "User": User, "Place": Place,
                "State": State, "City": City,
@@ -22,7 +21,7 @@ class HBNBCommand(cmd.Cmd):
     prompt = "(hbnb) "
 
     def do_quit(self, args):
-        """Quit the program."""
+        """Quit command to exit the program"""
         return True
 
     def do_EOF(self, args):
