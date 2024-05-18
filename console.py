@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""A python script for the console"""
+""" Defines the console"""
 import cmd
 from models import storage
 from models.base_model import BaseModel
@@ -18,7 +18,6 @@ class HBNBCommand(cmd.Cmd):
                "State": State, "City": City,
                "Amenity": Amenity, "Review": Review}
 
-    intro = "Welcome to Airbnb console. type 'help' for more info."
     prompt = "(hbnb) "
 
     def do_EOF(self, arg):
