@@ -5,7 +5,6 @@ in the application, providing common attributes and methods.
 """
 import uuid
 from datetime import datetime
-import models
 
 
 class BaseModel:
@@ -64,8 +63,8 @@ class BaseModel:
         """
         self.updated_at = datetime.now()
         from models import storage
-        models.storage.save()
-    
+        storage.save()
+
     def to_dict(self):
         """Returns a dictionary containing
         all keys/values of the instance's __dict__."""
