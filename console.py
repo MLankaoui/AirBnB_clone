@@ -1,5 +1,9 @@
 #!/usr/bin/python3
-"""Defines the console for the HBNB project"""
+"""
+This module defines the command interpreter for the HBNB project.
+It allows users to create, retrieve, update, and delete objects
+interactively or via command line.
+"""
 
 
 import cmd
@@ -14,7 +18,14 @@ from models.review import Review
 
 
 class HBNBCommand(cmd.Cmd):
-    """Command interpreter for HBNB"""
+    """
+    Command interpreter for the HBNB project.
+
+    This command interpreter provides a console interface for users
+    to interact with the HBNB project models and storage.
+    Available commands include creating new instances, showing,
+    updating, and deleting instances, as well as listing all instances.
+    """
     prompt = "(hbnb) "
     classes = {
         "BaseModel": BaseModel,
@@ -28,30 +39,40 @@ class HBNBCommand(cmd.Cmd):
 
     def emptyline(self):
         """
-emptyline command to skip (if empty line passed as a command do nothing)
+        Overrides the default behavior to do nothing on empty input line.
         """
         pass
 
     def do_quit(self, arg):
         """
-Quit command to exit the program
+        Quit command to exit the program.
+
+        Usage: quit
         """
         return True
 
     def do_EOF(self, arg):
         """
-EOF command to exit the program or (CRTL + D)
+        EOF command to exit the program (Ctrl+D).
+
+        Usage: EOF
         """
         return True
 
     def do_help(self, arg):
         """
-help command to get informations about commands (help + command)
+        Help command to display information about available commands.
+
+        Usage: help [command]
         """
         super().do_help(arg)
 
     def do_create(self, arg):
-        """Create a new instance of a class, save it, and print the id"""
+        """
+        Create a new instance of a class, save it, and print the id.
+
+        Usage: create <class_name>
+        """
         args = arg.split()
         if not args:
             print("** class name missing **")
@@ -65,7 +86,11 @@ help command to get informations about commands (help + command)
         print(new_instance.id)
 
     def do_show(self, arg):
-        """Show details of a specified object"""
+        """
+        Show details of a specified object.
+
+        Usage: show <class_name> <instance_id>
+        """
         args = arg.split()
         if not args:
             print("** class name missing **")
@@ -86,7 +111,11 @@ help command to get informations about commands (help + command)
             print("** no instance found **")
 
     def do_destroy(self, arg):
-        """Delete a specified object"""
+        """
+        Delete a specified object.
+
+        Usage: destroy <class_name> <instance_id>
+        """
         args = arg.split()
         if not args:
             print("** class name missing **")
@@ -108,7 +137,11 @@ help command to get informations about commands (help + command)
             print("** no instance found **")
 
     def do_all(self, arg):
-        """List all objects or objects of a specified class"""
+        """
+        List all objects or objects of a specified class.
+
+        Usage: all [class_name]
+        """
         args = arg.split()
         if args and args[0] not in self.classes:
             print("** class doesn't exist **")
@@ -123,7 +156,12 @@ help command to get informations about commands (help + command)
         print(objects)
 
     def do_update(self, arg):
-        """Update an attribute of a specified object"""
+        """
+        Update an attribute of a specified object.
+
+        Usage: update <class_name> <instance_id>
+        <attribute_name> <attribute_value>
+        """
         args = arg.split()
         if not args:
             print("** class name missing **")
