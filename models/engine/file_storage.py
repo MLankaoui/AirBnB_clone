@@ -1,5 +1,15 @@
 #!/usr/bin/python3
 import json
+from json import dump
+from json import load
+import os
+from models.user import User
+from models.base_model import BaseModel
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
 
 class FileStorage:
     """FileStorage class that handles the serialization
@@ -27,26 +37,23 @@ class FileStorage:
             json.dump(json_dict, f)
 
     def reload(self):
-        """Deserializes the JSON file to __objects, if the JSON
-        file exists, otherwise nothing happens."""
-        try:
-            with open(self.__file_path, 'r') as f:
-                dictionary_obj = json.load(f)
-                for key, value in dictionary_obj.items():
-                    class_name = value["__class__"]
-                    module_name = f"models.{self._to_snake_case(class_name)}"
-                    module = __import__(module_name, fromlist=[class_name])
-                    obj_class = getattr(module, class_name)
-                    obj = obj_class(**value)
-                    self.__objects[key] = obj
-        except FileNotFoundError:
-            pass
-        except KeyError as e:
-            print(f"KeyError: {e}")
-        except ImportError as e:
-            print(f"ImportError: {e}")
-        except Exception as e:
-            print(f"An unexpected error occurred: {e}")
+        """reload"""
+        from models.base_model import BaseModel
+
+        if os.path.exists(self.__file_path):
+            try:
+                with open(self.__file_path, "r",
+                          encoding="utf-8") as jsonF:
+                    json_data = load(jsonF)
+                    for key, value in json_data.items():
+                        if '.' in key:
+                            class_name, obj_id = key.split('.')
+                            class_obj = globals()[class_name]
+                            new_instance = class_obj(**value)
+                            self.new(new_instance)
+                            self.__objects[key] = new_instance
+            except FileNotFoundError:
+                pass
 
     def _to_snake_case(self, name):
         """Converts CamelCase to snake_case."""
