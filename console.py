@@ -2,6 +2,7 @@
 """Defines the console for the HBNB project"""
 
 
+
 import cmd
 from models import storage
 from models.base_model import BaseModel
@@ -27,17 +28,29 @@ class HBNBCommand(cmd.Cmd):
     }
 
     def emptyline(self):
-        """Do nothing on empty line input"""
+        """
+emptyline command to skip (if empty line passed as a command do nothing)
+        """
         pass
 
     def do_quit(self, arg):
-        """Quit command to exit the program"""
+        """
+Quit command to exit the program
+        """
         return True
 
     def do_EOF(self, arg):
-        """Exit command to exit the program"""
-        print()
+        """
+EOF command to exit the program or (CRTL + D)
+        """
         return True
+
+    def do_help(self, arg):
+        """
+help command to get informations about commands (help + command)
+        """
+        super().do_help(arg)
+        
 
     def do_create(self, arg):
         """Create a new instance of a class, save it, and print the id"""
