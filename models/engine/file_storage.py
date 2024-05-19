@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 import json
-from json import dump
 
 
 class FileStorage:
@@ -21,12 +20,12 @@ class FileStorage:
         self.__objects[key] = obj
 
     def save(self):
-        """save"""
-        dobj = {}
-        for key, val in self.__objects.items():
-            dobj[key] = val.to_dict()
-        with open(self.__file_path, 'w', encoding="utf-8") as jsonF:
-            dump(dobj, jsonF)
+        """Serializes the __objects dictionary to
+        the JSON file specified by __file_path."""
+        json_dict = {key: obj.to_dict() for key, obj in self.__objects.items()}
+
+        with open(self.__file_path, 'w') as f:
+            json.dump(json_dict, f)
 
     def reload(self):
         """Deserializes the JSON file to __objects, if the JSON
