@@ -39,6 +39,14 @@ class HBNBCommand(cmd.Cmd):
         print()
         return True
 
+    def help_quit(self):
+        """Help information for the quit command"""
+        print("Quit command to exit the program\n")
+
+    def help_EOF(self):
+        """Help information for the EOF command"""
+        print("Exit command to exit the program\n")
+
     def do_create(self, arg):
         """Create a new instance of a class, save it, and print the id"""
         args = arg.split()
