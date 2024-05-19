@@ -1,8 +1,9 @@
 #!/usr/bin/python3
-"""FileStorage"""
 
-
+# Import the custom file storage engine
 from models.engine.file_storage import FileStorage
 
 storage = FileStorage()
+
+# Reload data from the file storage
 storage.reload()
