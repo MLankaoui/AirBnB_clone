@@ -1,8 +1,5 @@
 #!/usr/bin/python3
 import json
-from json import dump
-from json import load
-import os
 
 
 class FileStorage:
@@ -24,28 +21,51 @@ class FileStorage:
         self.__objects[key] = obj
 
     def save(self):
-        """save"""
-        dobj = {}
-        for key, val in self.__objects.items():
-            dobj[key] = val.to_dict()
-        with open(self.__file_path, 'w', encoding="utf-8") as jsonF:
-            dump(dobj, jsonF)
+        """Serializes the __objects dictionary to
+        the JSON file specified by __file_path."""
+        jso_dict = {key: obj.to_dict() for key, obj in self.__objects.items()}
+
+        with open(self.__file_path, 'w') as f:
+            json.dump(jso_dict, f)
 
     def reload(self):
-        """reload"""
-        from models.base_model import BaseModel
+        """
+        deserializes the JSON file to __objects, if the JSON
+        file exists, otherwise nothing happens)
+        """
+        try:
+            with open(self.__file_path, 'r') as f:
+                dictionary_objj = json.load(f)
 
-        if os.path.exists(self.__file_path):
-            try:
-                with open(self.__file_path, "r",
-                          encoding="utf-8") as jsonF:
-                    json_data = load(jsonF)
-                    for key, value in json_data.items():
-                        if '.' in key:
-                            class_name, obj_id = key.split('.')
-                            class_obj = globals()[class_name]
-                            new_instance = class_obj(**value)
-                            self.new(new_instance)
-                            self.__objects[key] = new_instance
-            except FileNotFoundError:
-                pass
+                for key, value in dictionary_objj.items():
+                    clss_nm = value["__class__"]
+
+                    if clss_nm == 'BaseModel':
+                        from models.base_model import BaseModel
+                        obj_class = BaseModel
+                    elif clss_nm == 'User':
+                        from models.user import User
+                        obj_class = User
+                    elif clss_nm == 'Place':
+                        from models.place import Place
+                        obj_class = Place
+                    elif clss_nm == 'State':
+                        from models.state import State
+                        obj_class = State
+                    elif clss_nm == 'City':
+                        from models.city import City
+                        obj_class = City
+                    elif clss_nm == 'Amenity':
+                        from models.amenity import Amenity
+                        obj_class = Amenity
+                    elif clss_nm == 'Review':
+                        from models.review import Review
+                        obj_class = Review
+                    else:
+                        raise ImportError(
+                            f"Class {clss_nm} is not recognized")
+
+                    obj = obj_class(**value)
+                    self.__objects[key] = obj
+        except FileNotFoundError:
+            pass
