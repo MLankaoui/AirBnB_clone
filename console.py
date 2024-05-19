@@ -2,7 +2,6 @@
 """Defines the console for the HBNB project"""
 
 
-
 import cmd
 from models import storage
 from models.base_model import BaseModel
@@ -50,7 +49,6 @@ EOF command to exit the program or (CRTL + D)
 help command to get informations about commands (help + command)
         """
         super().do_help(arg)
-        
 
     def do_create(self, arg):
         """Create a new instance of a class, save it, and print the id"""
