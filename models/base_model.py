@@ -5,6 +5,7 @@ in the application, providing common attributes and methods.
 """
 import uuid
 from datetime import datetime
+import models.engine.file_storage
 
 
 class BaseModel:
@@ -36,17 +37,18 @@ class BaseModel:
         if kwargs:
             for key, value in kwargs.items():
                 if key != '__class__':
-                    if key in ('updated_at', 'created_at'):
-                        value = datetime.strptime(
-                            value, '%Y-%m-%dT%H:%M:%S.%f')
+                    if key in ('created_at', 'updated_at'):
+                        value = datetime.strptime(value, '%Y-%m-%dT%H:%M:%S.%f')
                     setattr(self, key, value)
             if 'id' not in kwargs:
                 self.id = str(uuid.uuid4())
+                self.created_at = datetime.now()
+                self.updated_at = self.created_at
         else:
             self.id = str(uuid.uuid4())
-
-        from models import storage
-        storage.new(self)
+            self.created_at = datetime.now()
+            self.updated_at = self.created_at
+            models.storage.new(self)
 
     def __str__(self):
         """Returns a string representation of the instance."""
