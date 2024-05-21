@@ -1,11 +1,5 @@
 #!/usr/bin/python3
-"""
-This module defines the command interpreter for the HBNB project.
-It allows users to create, retrieve, update, and delete objects
-interactively or via command line.
-"""
-
-
+"""" defining class HBNBCommand """
 import cmd
 from models import storage
 from models.base_model import BaseModel
