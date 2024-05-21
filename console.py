@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""" defining class HBNBCommand """
+""" Defining class HBNBCommand. """
 import cmd
 from models import storage
 from models.base_model import BaseModel
