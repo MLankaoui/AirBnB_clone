@@ -149,7 +149,7 @@ class HBNBCommand(cmd.Cmd):
         Update an attribute of a specified object.
 
         Usage: update <class_name> <instance_id>
-        <attribute_name> <attribute_value>
+               <attribute_name> <attribute_value>
         """
         args = arg.split()
         if not args:
