@@ -14,11 +14,6 @@ from models.review import Review
 class HBNBCommand(cmd.Cmd):
     """
     Command interpreter for the HBNB project.
-
-    This command interpreter provides a console interface for users
-    to interact with the HBNB project models and storage.
-    Available commands include creating new instances, showing,
-    updating, and deleting instances, as well as listing all instances.
     """
     prompt = "(hbnb) "
     classes = {
