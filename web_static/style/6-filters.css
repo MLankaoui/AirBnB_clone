@@ -63,11 +63,12 @@
 .locations .popover {
     display: none;
     position: absolute;
-    top: 52px;
+    top: 53px;
     left: -21px;
     width: 109.5%;
     background-color: #FAFAFA;
     border: 1px solid #DDDDDD;
+    border-top: none;
     z-index: 1000;
     padding: 30px;
     box-sizing: border-box;
@@ -75,11 +76,12 @@
 .amenities .popover {
     display: none;
     position: absolute;
-    top: 52px;
-    left: -1px;
+    top: 53px;
+    left: -0.5px;
     width: 90.5%;
     background-color: #FAFAFA;
     border: 1px solid #DDDDDD;
+    border-top: none;
     z-index: 1000;
     padding: 30px;
     box-sizing: border-box;
