@@ -132,3 +132,15 @@
     margin-top: 12px;
 }
 
+.art_three .top {
+    margin-top: -20px;
+}
+
+.art_three h2 {
+    margin-top: 25px;
+}
+.art_three .top .price_by_night {
+    margin: 25px 10px 0 0;
+}
+
+
