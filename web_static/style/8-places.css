@@ -119,10 +119,16 @@
 }
 
 .art_one .top {
-    margin-top: -120px;
+    margin-top: -127px;
 }
 
 .art_one .top .price_by_night {
     margin-top: 25px;
+}
+.art_two h2 {
+    margin-top: 7px;
+}
+.art_two .top .price_by_night {
+    margin-top: 12px;
 }
 
